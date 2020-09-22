@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spring-boot-client
+  name: spring-boot-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot-client
+  template:
+    metadata:
+      labels:
+        app: spring-boot-client
+    spec:
+      containers:
+      - image: luodina/spring-boot-admin:1.2
+        imagePullPolicy: IfNotPresent
+        name: spring-boot-client
+        volumeMounts:
+        - mountPath: /etc/appconfig/
+          name: config
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: app-config-property
+        name: config
